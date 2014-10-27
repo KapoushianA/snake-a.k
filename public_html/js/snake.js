@@ -24,7 +24,7 @@ var screenHeight;
 gameInitialize();
 snakeInitialize();
 foodInitialize();
-setInterval(gameLoop, 1000/60);
+setInterval(gameLoop, 40/1);
 
 /*----------------------------------------------------------------------------
  * Game Functions
@@ -63,7 +63,7 @@ function gameDraw() {
 
 function snakeInitialize() {
     snake = [];
-    snakeLength = 5;
+    snakeLength = 1;
     snakeSize = 20;
     snakeDirection = "down";
     
@@ -93,15 +93,16 @@ function snakeUpdate() {
    }
    else if(snakeDirection == "right") {
        snakeHeadX++;
-   }
-       
-   
+        }
+        
+checkFoodCollisions(snakeHeadX, snakeHeadY);
+checkWallCollisions(snakeHeadX, snakeHeadY)
    
    var snakeTail = snake.pop();
    snakeTail.x = snakeHeadX;
    snakeTail.y = snakeHeadY;
    snake.unshift(snakeTail);
-}
+   }
 
 /*----------------------------------------------------------------------------
  * Food Functions
@@ -119,9 +120,9 @@ function foodInitialize() {
 
 function foodDraw() {
     context.fillstyle = "white";
-    context.fillRect(food.x, food.y, snakeSize, snakeSize);
+    context.fillRect(food.x * snakeSize, food.y * snakeSize, snakeSize, snakeSize);
 }
-
+ 
 
 function setFoodPosition() {
     var randomX = Math.floor(Math.random() * screenWidth);
@@ -139,11 +140,26 @@ function keyboardHandler(event) {
     console.log(event);
 
 
-if(event.keyCode == "39") {
+if(event.keyCode == "39" && snakeDirection != "left") {
     snakeDirection = "right";
 }
-else if(event.keyCode == "40") {
+else if(event.keyCode == "40" && snakeDirection  != "up") {
     snakeDirection = "down";
 }
 }
 
+
+/*-----------------------------------------------------------------------------
+ * Collision Handling
+ * ----------------------------------------------------------------------------
+ */
+
+function checkFoodCollisions(snakeHeadX, snakeHeadY) {
+    if(snakeHeadX == food.x && snakeHeadY == food.y) {
+        snake.push({
+            x: 0,
+            y: 0
+        });
+        snakeLength++;
+    }
+}
