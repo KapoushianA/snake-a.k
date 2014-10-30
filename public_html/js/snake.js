@@ -56,10 +56,11 @@ function gameInitialize() {
 
 function gameLoop() {
     gameDraw();
-    if(gameState == "PLAY")
+    if(gameState == "PLAY"){
        snakeUpdate();
        snakeDraw();
        foodDraw();
+   }
 }
 
 function gameDraw() {
@@ -74,8 +75,8 @@ function gameDraw() {
 
 function snakeInitialize() {
     snake = [];
-    snakeLength = 1;
-    snakeSize = 20;
+    snakeLength = 5;
+    snakeSize = 25;
     snakeDirection = "down";
     
     for(var index = snakeLength - 1; index >= 0; index--){
@@ -89,7 +90,7 @@ function snakeInitialize() {
 
 function snakeDraw() {
     for(var index = 0; index < snake.length; index++) {
-       context.fillStyle = "white";
+       context.fillStyle = "blue";
        context.fillRect(snake[index].x * snakeSize, snake[index].y * snakeSize, snakeSize, snakeSize);
     }
 }
@@ -207,7 +208,7 @@ function setState(state){
 }
 
 function displayMenu(menu) {
-    menu.style.visibility = "visibility";
+    menu.style.visibility = "visible";
 }
 
 function showMenu(state) {

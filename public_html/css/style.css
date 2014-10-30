@@ -12,3 +12,23 @@ body {
     visibility: hidden;
 }
 
+h1, h3 {
+    font-family: 'Fredoka One', cursive;
+    color: blue;
+    text-align: center;
+}
+
+.title {
+    font-size: 62px;
+    margin-bottom: 0px;
+}
+
+#restartButton {
+    border: 2px solid blue;
+    border-radius: 10px;
+}   
+
+#restartButton:hover {
+    background-color: pink;
+}
+
