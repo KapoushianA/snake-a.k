@@ -19,6 +19,8 @@ var screenHeight;
 var gameState;
 var gameOverMenu;
 var restartButton;
+var playHUD;
+var scoreboard;
 
 /*----------------------------------------------------------------------------
  * Executing Game Code
@@ -28,7 +30,7 @@ var restartButton;
 gameInitialize();
 snakeInitialize();
 foodInitialize();
-setInterval(gameLoop, 40/1);
+setInterval(gameLoop, 1000/30);
 
 /*----------------------------------------------------------------------------
  * Game Functions
@@ -53,6 +55,9 @@ function gameInitialize() {
     restartButton = document.getElementById("restartButton");
     restartButton.addEventListener("click", gameRestart);
     
+    playHUD = document.getElementById("playHUD");
+    scoreboard = document.getElementById("scoreboard");
+    
     setState("PLAY");
     
     
@@ -60,6 +65,7 @@ function gameInitialize() {
 
 function gameLoop() {
     gameDraw();
+    displayScoreboard();
     if(gameState == "PLAY"){
        snakeUpdate();
        snakeDraw();
@@ -100,7 +106,7 @@ function snakeInitialize() {
 
 function snakeDraw() {
     for(var index = 0; index < snake.length; index++) {
-       context.fillStyle = "blue";
+       context.fillStyle = "green";
        context.strokeStyle = "rgb(158, 237, 255)";
        context.strokeRect(snake[index].x * snakeSize, snake[index].y * snakeSize, snakeSize, snakeSize);
        context.fillRect(snake[index].x * snakeSize, snake[index].y * snakeSize, snakeSize, snakeSize);
@@ -200,6 +206,7 @@ function checkFoodCollisions(snakeHeadX, snakeHeadY) {
             y: 0
         });
         snakeLength++;
+        setFoodPosition();
         
     }
 }
@@ -207,6 +214,10 @@ function checkFoodCollisions(snakeHeadX, snakeHeadY) {
 function checkWallCollisions(snakeHeadX, snakeHeadY) {
     if(snakeHeadX * snakeSize >= screenWidth || snakeHeadX * snakeSize < 0){
         setState("GAME OVER");
+    }  
+    else if(snakeHeadY * snakeSize >= screenHeight || snakeHeadY * snakeSize < 0){
+        setState("GAME OVER");
+        
     }
     
 }
@@ -247,9 +258,16 @@ function showMenu(state) {
     if(state == "GAME OVER") {
         displayMenu(gameOverMenu);
     }
+    else if(state == "PLAY"){
+        displayMenu(playHUD);
+    }
 }
 
 function centerMenuPosition(menu){
     menu.style.top = (screenHeight / 2) - (menu.offsetHeight / 2) + "px";
     menu.style.left = (screenWidth / 2) - (menu.offsetWidth / 2) + "px";
+}
+
+function displayScoreboard() {
+    scoreboard.innerHTML = "Score: " + snakeLength;
 }
